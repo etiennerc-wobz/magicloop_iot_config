@@ -1,4 +1,4 @@
-# magicloop-iot-config
+# magicloop-wifi-config
 
 1/ linux package install 
 sudo apt update
