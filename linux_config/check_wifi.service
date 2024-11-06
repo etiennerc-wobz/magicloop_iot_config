@@ -1,0 +1,10 @@
+[Unit]
+Description=Check WiFi Connection and Start AP if Not Connected
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/check_wifi.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
