@@ -1,0 +1,7 @@
+[Unit]
+Description=Vérification automatique de la connexion Wi-Fi et activation du point d'accès
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/check_wifi_and_enable_ap.sh

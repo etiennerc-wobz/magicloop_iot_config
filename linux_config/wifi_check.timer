@@ -1,0 +1,9 @@
+[Unit]
+Description=Exécuter wifi_check.service toutes les minutes
+
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=1min
+
+[Install]
+WantedBy=timers.target
