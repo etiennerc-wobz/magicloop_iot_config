@@ -61,3 +61,22 @@ sudo systemctl restart NetworkManager
 place check_wifi_enable_ap.sh to /usr/local/bin/
 place wifi_check.service to /etc/systemd/system/
 place wifi_check.timer to /etc/systemd/system/
+
+
+5/ Configurer Avahi
+
+sudo apt update
+sudo apt install avahi-daemon
+
+sudo systemctl start avahi-daemon
+sudo systemctl enable avahi-daemon
+
+sudo nano /etc/hostname
+    raspberry-pi-magicloop-config
+
+sudo nano /etc/hosts
+    127.0.1.1   raspberry-pi-magicloop-config
+
+sudo reboot
+
+ping raspberry-pi-magicloop-config.local
