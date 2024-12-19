@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Chemin du script setup.sh
+SCRIPT="./setup.sh"
+
+# Vérifier si le script setup.sh existe
+if [ -f "$SCRIPT" ]; then
+    echo "Exécution de setup.sh après le pull..."
+    $SCRIPT
+else
+    echo "setup.sh introuvable. Assurez-vous qu'il est à la racine du projet."
+fi
