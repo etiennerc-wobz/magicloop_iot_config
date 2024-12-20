@@ -149,4 +149,4 @@ def disconnect_wifi():
     subprocess.run(['nmcli', 'radio', 'wifi', 'off'], check=True)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5123)
+    app.run(host='0.0.0.0', port=5000)
