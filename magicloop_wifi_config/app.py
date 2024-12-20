@@ -17,7 +17,7 @@ def get_wifi_ssid():
         )
         for line in result.stdout.splitlines():
             active, ssid = line.split(":")
-            if active == "yes":
+            if active == "oui":
                 return ssid
         return None
     except Exception as e:
