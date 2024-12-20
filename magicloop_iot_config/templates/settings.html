@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Paramètres</h1>
+<form method="POST" action="/settings">
+    <label for="hostname">Nom d'hôte :</label>
+    <input type="text" id="hostname" name="hostname" required>
+    <button type="submit">Mettre à jour</button>
+</form>
+{% endblock %}

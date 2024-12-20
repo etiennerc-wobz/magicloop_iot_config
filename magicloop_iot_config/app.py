@@ -4,45 +4,17 @@ import re
 
 app = Flask(__name__)
 
-def get_ip_address(interface):
-    """Récupère l'adresse IP actuelle pour une interface donnée."""
-    result = subprocess.run(['nmcli', '-g', 'IP4.ADDRESS', 'device', 'show', interface], capture_output=True, text=True)
-    return result.stdout.strip()
-
-def get_wifi_ssid():
-    """Récupère le SSID actuel du réseau Wi-Fi."""
-    try:
-        result = subprocess.run(
-            ["nmcli", "-t", "-f", "active,ssid", "dev", "wifi"], capture_output=True, text=True
-        )
-        for line in result.stdout.splitlines():
-            active, ssid = line.split(":")
-            if active == "oui":
-                return ssid
-        return None
-    except Exception as e:
-        print(f"Erreur lors de la récupération du SSID: {e}")
-        return None
-
-def scan_wifi():
-    """Scanne les réseaux Wi-Fi disponibles."""
-    print("scan_wifi")
-    result = subprocess.run(['nmcli', '-t', '-f', 'SSID,SECURITY', 'dev', 'wifi'], capture_output=True, text=True)
-    networks = {}
-    for line in result.stdout.strip().split("\n"):
-        print(f'scan_wifi line {line}')
-        if line:
-            ssid, security = line.split(":")
-            if ssid not in networks:
-                networks[ssid] = {"ssid": ssid, "security": security}
-    return list(networks.values())
-
-def disconnect_wifi():
-    subprocess.run(['nmcli', 'radio', 'wifi', 'off'], check=True)
-
 @app.route('/')
-def index():
+def home():
     return render_template('index.html')
+
+@app.route('/wifi-config')
+def wifi_config():
+    return render_template('wifi_config.html')
+
+@app.route('/settings')
+def settings():
+    return render_template('settings.html')
 
 @app.route('/current_ips', methods=['GET'])
 def current_ips():
@@ -140,5 +112,41 @@ def hotspot_status():
     is_hotspot_active = "yes:Hotspot" in result.stdout
     return jsonify({"hotspot_active": is_hotspot_active})
 
+def get_ip_address(interface):
+    """Récupère l'adresse IP actuelle pour une interface donnée."""
+    result = subprocess.run(['nmcli', '-g', 'IP4.ADDRESS', 'device', 'show', interface], capture_output=True, text=True)
+    return result.stdout.strip()
+
+def get_wifi_ssid():
+    """Récupère le SSID actuel du réseau Wi-Fi."""
+    try:
+        result = subprocess.run(
+            ["nmcli", "-t", "-f", "active,ssid", "dev", "wifi"], capture_output=True, text=True
+        )
+        for line in result.stdout.splitlines():
+            active, ssid = line.split(":")
+            if active == "oui":
+                return ssid
+        return None
+    except Exception as e:
+        print(f"Erreur lors de la récupération du SSID: {e}")
+        return None
+
+def scan_wifi():
+    """Scanne les réseaux Wi-Fi disponibles."""
+    print("scan_wifi")
+    result = subprocess.run(['nmcli', '-t', '-f', 'SSID,SECURITY', 'dev', 'wifi'], capture_output=True, text=True)
+    networks = {}
+    for line in result.stdout.strip().split("\n"):
+        print(f'scan_wifi line {line}')
+        if line:
+            ssid, security = line.split(":")
+            if ssid not in networks:
+                networks[ssid] = {"ssid": ssid, "security": security}
+    return list(networks.values())
+
+def disconnect_wifi():
+    subprocess.run(['nmcli', 'radio', 'wifi', 'off'], check=True)
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5123)
