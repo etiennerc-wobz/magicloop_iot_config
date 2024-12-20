@@ -112,6 +112,26 @@ def hotspot_status():
     is_hotspot_active = "yes:Hotspot" in result.stdout
     return jsonify({"hotspot_active": is_hotspot_active})
 
+@app.route('/service_status', methods=['GET'])
+def service_status():
+    """Retourne l'état des services magic_bin et magic_carpet."""
+    services = ["magic_bin", "magic_carpet"]
+    status = {}
+    
+    for service in services:
+        try:
+            result = subprocess.run(
+                ["systemctl", "is-active", service],
+                capture_output=True,
+                text=True,
+            )
+            # Analyse le statut (actif ou inactif)
+            status[service] = result.stdout.strip()
+        except Exception as e:
+            status[service] = f"Erreur: {str(e)}"
+    
+    return jsonify(status)
+
 def get_ip_address(interface):
     """Récupère l'adresse IP actuelle pour une interface donnée."""
     result = subprocess.run(['nmcli', '-g', 'IP4.ADDRESS', 'device', 'show', interface], capture_output=True, text=True)

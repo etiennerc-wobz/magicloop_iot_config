@@ -7,4 +7,29 @@
     <input type="text" id="hostname" name="hostname" required>
     <button type="submit">Mettre à jour</button>
 </form>
+<div>
+    <h2>État des services</h2>
+    <p><strong>magic_bin:</strong> <span id="magic_bin_status">...</span></p>
+    <p><strong>magic_carpet:</strong> <span id="magic_carpet_status">...</span></p>
+    <button onclick="updateServiceStatus()">Actualiser l'état des services</button>
+</div>
+<script>
+    function updateServiceStatus() {
+        fetch('/service_status')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('magic_bin_status').textContent = data.magic_bin || "Erreur";
+                document.getElementById('magic_carpet_status').textContent = data.magic_carpet || "Erreur";
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                alert('Impossible de récupérer l\'état des services.');
+            });
+    }
+
+    // Charger l'état des services au démarrage
+    document.addEventListener('DOMContentLoaded', function() {
+        updateServiceStatus();
+    });
+</script>
 {% endblock %}
