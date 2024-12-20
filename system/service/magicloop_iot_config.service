@@ -3,13 +3,14 @@ Description=Flask Application
 After=network.target
 
 [Service]
-User=magicloop-iot
+User=root
 WorkingDirectory=/home/magicloop-iot/Projects/magicloop_iot_config
 ExecStart=/home/magicloop-iot/Projects/magicloop_iot_config/venv/bin/python3 -m flask run --host=0.0.0.0 --port=5000
 Restart=always
-Environment="FLASK_APP=app.py"
+Environment="FLASK_APP=magicloop_iot_config/app.py"
 Environment="FLASK_ENV=production"
-Environment="PATH=/home/magicloop-iot/Projects/magicloop_iot_config/venv/bin:$PATH"
+Environment="PATH=/usr/bin:/bin:/usr/sbin:/sbin"
+Environment="PYTHONPATH=/home/magicloop-iot/Projects/magicloop_iot_config"
 
 [Install]
 WantedBy=multi-user.target
